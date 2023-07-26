@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useEffect } from "react"
+import "./App.css"
+import { useDispatch } from "react-redux"
+import Routing from "./routing/Routes"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { fire } from "./config/firebaseConfig"
+import { updateUser } from "./redux/actions"
+
+export const GlobalsContext = createContext()
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const checkAuthState = async () => {
+            onAuthStateChanged(getAuth(fire), (user) => {
+                console.log(user)
+                if (user) dispatch(updateUser(user))
+            })
+        }
+        checkAuthState()
+    }, [])
+    return (
+        <GlobalsContext.Provider value={{ dispatch }}>
+            <Routing />
+        </GlobalsContext.Provider>
+    )
 }
 
-export default App;
+export default App
