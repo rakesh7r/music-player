@@ -3,13 +3,14 @@ import {
     combineReducers,
     applyMiddleware,
 } from "redux"
-import { musicReducer } from "./reducers"
+import { musicReducer, userReducer } from "./reducers"
 import { composeWithDevTools } from "redux-devtools-extension"
 import thunk from "redux-thunk"
 import { Provider } from "react-redux"
 
 const rootReducer = combineReducers({
     music: musicReducer,
+    user: userReducer,
 })
 
 export const store = createStore(

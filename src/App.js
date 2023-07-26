@@ -1,4 +1,4 @@
-import { createContext, useEffect } from "react"
+import { createContext, useEffect, useState } from "react"
 import "./App.css"
 import { useDispatch } from "react-redux"
 import Routing from "./routing/Routes"
@@ -10,17 +10,20 @@ export const GlobalsContext = createContext()
 
 function App() {
     const dispatch = useDispatch()
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
     useEffect(() => {
         const checkAuthState = async () => {
             onAuthStateChanged(getAuth(fire), (user) => {
-                console.log(user)
-                if (user) dispatch(updateUser(user))
+                if (user) {
+                    dispatch(updateUser(user))
+                    setIsAuthenticated(true)
+                }
             })
         }
         checkAuthState()
     }, [])
     return (
-        <GlobalsContext.Provider value={{ dispatch }}>
+        <GlobalsContext.Provider value={{ dispatch, isAuthenticated }}>
             <Routing />
         </GlobalsContext.Provider>
     )

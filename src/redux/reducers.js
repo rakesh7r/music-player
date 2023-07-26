@@ -6,10 +6,12 @@ import {
 } from "./types"
 
 const initialState = {
-    user: null,
-    creds: null,
     homeResults: null,
     searchResults: null,
+}
+const userState = {
+    user: null,
+    creds: null,
 }
 
 export const musicReducer = (state = initialState, action) => {
@@ -22,6 +24,17 @@ export const musicReducer = (state = initialState, action) => {
             return { ...state, homeResults: action.payload }
         case UPDATE_SEARCH_RESULTS:
             return { ...state, searchResults: action.payload }
+        default:
+            return state
+    }
+}
+
+export const userReducer = (state = userState, action) => {
+    switch (action.type) {
+        case UPDATE_USER:
+            return { ...state, user: action.payload }
+        case UPDATE_CREDS:
+            return { ...state, creds: action.payload }
         default:
             return state
     }
